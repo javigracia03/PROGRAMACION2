@@ -1,0 +1,1 @@
+[{"hora":"20:12:53","temperatura":20},{"hora":"20:12:54","temperatura":15},{"hora":"20:12:55","temperatura":18},{"hora":"20:12:56","temperatura":17},{"hora":"20:12:57","temperatura":20},{"hora":"20:12:58","temperatura":20},{"hora":"20:12:59","temperatura":18}]
