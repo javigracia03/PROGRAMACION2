@@ -92,6 +92,20 @@ buscarAsignaturaconCodigo(codigo){
 
 }
 
+
+buscarDNIconCodigo(codigo){
+    var textoSQL = "select * from Matricula where codigo=$codigo";
+     var valoresParaSQL = { $codigo: codigo }
+     return new Promise( (resolver, rechazar) => {
+             this.laConexion.all( textoSQL, valoresParaSQL,
+                
+                    ( err, res ) => {
+                        ( err ? rechazar(err) : resolver(res) )
+            })
+}) 
+
+}
+
 // .................................................................
 //          codigo:int, nombre:Texto  
 //                  insertarAsignatura() -->
@@ -106,6 +120,22 @@ insertarAsignatura(datos){
         ( err ? rechazar(err) : resolver() )
     }) 
     })
+}
+
+
+
+
+matricular(datos){
+    
+    var textoSQL ='insert into Matricula values( $dni, $codigo);'
+    var valoresParaSQL = { $codigo: datos.codigo, $dni: datos.dni }
+    return new Promise( (resolver, rechazar) => {
+    this.laConexion.run( textoSQL, valoresParaSQL, function( err ) {
+
+        ( err ? rechazar(err) : resolver() )
+    }) 
+    })
+
 }
 // .................................................................
 //          cerrar() -->
