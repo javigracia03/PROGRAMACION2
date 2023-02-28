@@ -137,6 +137,19 @@ matricular(datos){
     })
 
 }
+
+
+buscarcodigosConApellidos(apellidos){
+    var textoSQL = "select Matricula.codigo from Matricula, Persona where Persona.apellidos=$apellidos and Persona.dni = Matricula.dni"
+     var valoresParaSQL = { $apellidos: apellidos }
+     return new Promise( (resolver, rechazar) => {
+             this.laConexion.all( textoSQL, valoresParaSQL,
+                
+                    ( err, res ) => {
+                        ( err ? rechazar(err) : resolver(res) )
+            })
+}) 
+}
 // .................................................................
 //          cerrar() -->
 // .................................................................
