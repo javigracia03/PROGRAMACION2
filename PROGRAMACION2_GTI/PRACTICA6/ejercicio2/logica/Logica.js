@@ -78,6 +78,35 @@ buscarPersonaConDNI( dni ) {
 }) 
 
 } // ()
+
+buscarAsignaturaconCodigo(codigo){
+    var textoSQL = "select * from Asignatura where codigo=$codigo";
+     var valoresParaSQL = { $codigo: codigo }
+     return new Promise( (resolver, rechazar) => {
+             this.laConexion.all( textoSQL, valoresParaSQL,
+                
+                    ( err, res ) => {
+                        ( err ? rechazar(err) : resolver(res) )
+            })
+}) 
+
+}
+
+// .................................................................
+//          codigo:int, nombre:Texto  
+//                  insertarAsignatura() -->
+// .................................................................
+insertarAsignatura(datos){
+    var textoSQL =
+             'insert into Asignatura values( $codigo, $nombre);'
+     var valoresParaSQL = { $codigo: datos.codigo, $nombre: datos.nombre }
+     return new Promise( (resolver, rechazar) => {
+             this.laConexion.run( textoSQL, valoresParaSQL, function( err ) {
+
+        ( err ? rechazar(err) : resolver() )
+    }) 
+    })
+}
 // .................................................................
 //          cerrar() -->
 // .................................................................
