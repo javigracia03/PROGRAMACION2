@@ -24,27 +24,56 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
 
         
      // .......................................................
-     // GET /borrarFilasdeTablas
+     // POST /borrarFilasdeTablas
      // .......................................................
      servidorExpress.post(
-             '/borrarFilasde/:tabla',
+             '/borrarFilasde',
             async function( peticion, respuesta ){
                     console.log( " * GET /borrarFilasde/ " )
                     // averiguo la tabla
-                    var tabla = peticion.params.tabla
+                    var tabla = JSON.parse(peticion.body).tabla
                     // llamo a la función adecuada de la lógica
-                    console.log(tabla)
-                    var res  = await laLogica.borrarFilasDe( tabla )
-                    console.log(res + "aui")
-                    // si el array de resultados no tiene una casilla ...
-                    if( res.length != 1 ) {
-                            // 404: not found
-                            respuesta.status(404).send( "no encontré dni: " + dni )
-                            return
-}
-// todo ok
-                    respuesta.send( JSON.stringify( res[0] ) )
-            }) // get /persona
+                    
+                    await laLogica.borrarFilasDe( tabla )
+                        respuesta.send("TODO OK")   
+            })
+     // .......................................................
+     // POST /borrarFilasdeTodasLasTablas
+     // .......................................................
+     servidorExpress.post(
+        '/borrarFilasdeTodasLasTablas',
+       async function( peticion, respuesta ){
+               console.log( " * POST /borrarFilasdeTodasLasTablas " )
+               
+               
+               // llamo a la función adecuada de la lógica
+               
+               await laLogica.borrarFilasDeTodasLasTablas()
+                   respuesta.send("TODO OK")   
+       })
+     // .......................................................
+     // GET /buscarAsignatura?cod=
+     // .......................................................
+     servidorExpress.get(
+        '/buscarAsignatura',
+       async function( peticion, respuesta ){
+               console.log( " * GET /buscarAsignatura " )
+               
+               var codigo = peticion.query.cod
+               console.log(codigo)
+               // llamo a la función adecuada de la lógica
+               
+               var res = await laLogica.buscarAsignaturaconCodigo(codigo)
+                   
+               if(res.length != 1){
+                respuesta.status(404).send("no hay ninguna asignatura con ese codigo")
+               }
+               respuesta.send(res[0].nombre)   
+       })
+
+                
+            
+            // POST /insertarpersona
 
             servidorExpress.post(
                 '/insertarpersona',
