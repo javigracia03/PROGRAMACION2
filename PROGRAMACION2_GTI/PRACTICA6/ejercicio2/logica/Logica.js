@@ -14,7 +14,7 @@ module.exports = class Logica {
                     ( err ) => { if(!err) {
 
                         this.laConexion.run( "PRAGMA foreign_keys = ON" )
-                        console.log("ERROR" + err)
+                    
                     }
                     cb( err)
                     })
@@ -26,6 +26,7 @@ module.exports = class Logica {
 // .................................................................
 borrarFilasDe( tabla ) {
      return new Promise( (resolver, rechazar) => {
+            console.log(tabla)
              this.laConexion.run(
                      "delete from " + tabla + ";",
                      (err)=> ( err ? rechazar(err) : resolver() )
@@ -47,6 +48,7 @@ async borrarFilasDeTodasLasTablas() {
 //insertarPersona() -->
 // .................................................................
 insertarPersona( datos ) {
+    console.log("DTAOS" + datos.dni)
      var textoSQL =
              'insert into Persona values( $dni, $nombre, $apellidos );'
      var valoresParaSQL = { $dni: datos.dni, $nombre: datos.nombre,
