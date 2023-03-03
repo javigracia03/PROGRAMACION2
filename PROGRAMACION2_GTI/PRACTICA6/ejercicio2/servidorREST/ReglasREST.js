@@ -52,7 +52,7 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
                    respuesta.send("TODO OK")   
        })
      // .......................................................
-     // GET /buscarAsignatura?cod=
+     // GET /buscarAsignatura?cod=<num>
      // .......................................................
      servidorExpress.get(
         '/buscarAsignatura',
@@ -60,18 +60,94 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
                console.log( " * GET /buscarAsignatura " )
                
                var codigo = peticion.query.cod
-               console.log(codigo)
+               
                // llamo a la función adecuada de la lógica
                
                var res = await laLogica.buscarAsignaturaconCodigo(codigo)
                    
                if(res.length != 1){
                 respuesta.status(404).send("no hay ninguna asignatura con ese codigo")
+                return
                }
                respuesta.send(res[0].nombre)   
        })
-
+     // .......................................................
+     // GET /buscarDNI?cod=<num>
+     // .......................................................
+     servidorExpress.get(
+        '/buscarDNI',
+       async function( peticion, respuesta ){
+               console.log( " * GET /buscarDNI " )
+               
+               var codigo = peticion.query.cod
+               
+               // llamo a la función adecuada de la lógica
+               
+               var res = await laLogica.buscarDNIconCodigo(codigo)
+                   
+               if(res.length == 0){
+                respuesta.status(404).send("no hay ninguna persona matriculada con ese codigo")
+                return
+               }
+               respuesta.send(res.map(a => a.dni))   
+       })
                 
+     // .......................................................
+     // POST /insertarAsignatura?cod=<num>&nombre=<texto>
+     // .......................................................
+     servidorExpress.post(
+        '/insertarAsignatura',
+       async function( peticion, respuesta ){
+               console.log( " * POST /insertarAsignatura " )
+               
+               var datos = JSON.parse(peticion.body)
+               
+               // llamo a la función adecuada de la lógica
+               
+               await laLogica.insertarAsignatura(datos)
+                   
+               respuesta.send("TODO OK") 
+               
+       })
+     // .......................................................
+     // POST /matricular?cod=<num>&dni=<texto>
+     // .......................................................
+     servidorExpress.post(
+        '/matricular',
+       async function( peticion, respuesta ){
+               console.log( " * POST /matricular " )
+               
+               var datos = JSON.parse(peticion.body)
+               
+               // llamo a la función adecuada de la lógica
+               
+               await laLogica.matricular(datos)
+               
+               respuesta.send("TODO OK") 
+               
+       })
+
+     // .......................................................
+     // POST /buscarcodigos?appellidos<texto>
+     // .......................................................
+     servidorExpress.get(
+        '/buscarcodigos',
+       async function( peticion, respuesta ){
+               console.log( " * GET /matricular " )
+               
+               var appellidos = peticion.query.appellidos
+               
+               // llamo a la función adecuada de la lógica
+               
+               var res = await laLogica.buscarcodigosConApellidos(appellidos)
+               console.log(res)
+               if(res.length==0){
+                respuesta.status(404).send("Persona no encontrada")
+                return
+                }
+               respuesta.send(res) 
+               
+       })
             
             // POST /insertarpersona
 

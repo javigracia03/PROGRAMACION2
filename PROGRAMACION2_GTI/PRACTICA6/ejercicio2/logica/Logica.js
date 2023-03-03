@@ -48,7 +48,7 @@ async borrarFilasDeTodasLasTablas() {
 //insertarPersona() -->
 // .................................................................
 insertarPersona( datos ) {
-    console.log("DTAOS" + datos.dni)
+    
      var textoSQL =
              'insert into Persona values( $dni, $nombre, $apellidos );'
      var valoresParaSQL = { $dni: datos.dni, $nombre: datos.nombre,
