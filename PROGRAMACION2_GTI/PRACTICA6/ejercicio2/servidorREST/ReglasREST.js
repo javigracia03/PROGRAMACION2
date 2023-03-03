@@ -69,7 +69,7 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
                 respuesta.status(404).send("no hay ninguna asignatura con ese codigo")
                 return
                }
-               respuesta.send(res[0].nombre)   
+               respuesta.send(res[0])   
        })
      // .......................................................
      // GET /buscarDNI?cod=<num>
@@ -89,7 +89,7 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
                 respuesta.status(404).send("no hay ninguna persona matriculada con ese codigo")
                 return
                }
-               respuesta.send(res.map(a => a.dni))   
+               respuesta.send(res)   
        })
                 
      // .......................................................
@@ -105,7 +105,7 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
                // llamo a la función adecuada de la lógica
                
                await laLogica.insertarAsignatura(datos)
-                   
+               respuesta.status(200)  
                respuesta.send("TODO OK") 
                
        })
@@ -128,19 +128,19 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
        })
 
      // .......................................................
-     // POST /buscarcodigos?appellidos<texto>
+     // GET /buscarcodigos?appellidos<texto>
      // .......................................................
      servidorExpress.get(
         '/buscarcodigos',
        async function( peticion, respuesta ){
-               console.log( " * GET /matricular " )
+               console.log( " * GET /buscarcodigos " )
                
-               var appellidos = peticion.query.appellidos
-               
+               var apellidos = peticion.query.apellidos
+              
                // llamo a la función adecuada de la lógica
                
-               var res = await laLogica.buscarcodigosConApellidos(appellidos)
-               console.log(res)
+               var res = await laLogica.buscarcodigosConApellidos(apellidos)
+               
                if(res.length==0){
                 respuesta.status(404).send("Persona no encontrada")
                 return
