@@ -154,19 +154,29 @@ module.exports.cargar = function( servidorExpress, laLogica ) {
             servidorExpress.post(
                 '/insertarpersona',
                async function( peticion, respuesta ){
-                       console.log( " * POST /insertarpersona " )
+                try{
+                        console.log( " * POST /insertarpersona " )
                        // averiguo los datps
                        var datos = JSON.parse(peticion.body)
                        console.log(datos)
                        // llamo a la función adecuada de la lógica
-                       await laLogica.insertarPersona(datos)
                        
-    
-                       //PREGUNTAR JORDI SI HAY ALGUNA FORMA DE NO CERRAR LA CONEXION SI EXISTE DNI Y COMO MOSTRARLO EN PANTALLA
+                        await laLogica.insertarPersona(datos)
                        
-        
-                               respuesta.status(200).send( "TODO OK")
-                               return
+                       respuesta.status(200).send("TODO OK")
+                         
+                        return
+                }catch(err){
+                        respuesta.send(err.message)
+                
+                }       
+                                
+                       
+                       
+                        
+                       
+                        
+                       
 }
 // todo ok
                        

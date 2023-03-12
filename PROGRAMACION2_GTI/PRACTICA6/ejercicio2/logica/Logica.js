@@ -55,8 +55,14 @@ insertarPersona( datos ) {
                                                 $apellidos: datos.apellidos }
      return new Promise( (resolver, rechazar) => {
              this.laConexion.run( textoSQL, valoresParaSQL, function( err ) {
-
-        ( err ? rechazar(err) : resolver() )
+                if (err){
+                if (err.code === 'SQLITE_CONSTRAINT') {
+                    rechazar(new Error('Key value already exists'));
+                  } else {
+                    rechazar(new Error(err.message));
+                  }} else {
+                    resolver();
+                  }
     }) 
     })
 } // ()
